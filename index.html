@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNB Chain DApp</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f3ba2f; /* BNB Yellow Color */
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(243, 186, 47, 0.2);
+      text-align: center;
+      width: 80%;
+      max-width: 350px;
+    }
+    button {
+      background-color: #f3ba2f;
+      color: #000000;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+    }
+    #walletAddress {
+      margin-top: 15px;
+      word-break: break-all;
+      color: #ffffff;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>BNB Smart DApp</h2>
+    <p style="color: #aaa; font-size: 12px;">Connect to BNB Chain</p>
+    <button id="connectBtn" onclick="connectBNBWallet()">Connect Wallet</button>
+    <p id="walletAddress"></p>
+  </div>
+
+  <script>
+    async function connectBNBWallet() {
+      if (window.ethereum) {
+        try {
+          // Check/Switch to BNB Smart Chain (Chain ID: 0x38 = 56)
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x38' }], // BNB Mainnet
+          });
+
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          const signer = provider.getSigner();
+          const address = await signer.getAddress();
+          
+          document.getElementById("walletAddress").innerText = "BNB Address: " + address;
+        } catch (error) {
+          // If network is not added in user's wallet
+          if (error.code === 4902) {
+            alert("Kripya apne wallet me BNB Smart Chain Network add karein.");
+          } else {
+            alert("Connection error: " + error.message);
+          }
+        }
+      } else {
+        alert("Kripya is page ko Trust Wallet ya MetaMask ke In-App Browser me kholein and aaset verification kare.");
+      }
+    }
+  </script>
+
+</body>
+</html>
