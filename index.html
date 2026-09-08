@@ -1,84 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BNB Chain DApp</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-  <style>
-    body {
-      background-color: #121212;
-      color: #f3ba2f; /* BNB Yellow Color */
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: #1e1e1e;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(243, 186, 47, 0.2);
-      text-align: center;
-      width: 80%;
-      max-width: 350px;
-    }
-    button {
-      background-color: #f3ba2f;
-      color: #000000;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 15px;
-      width: 100%;
-    }
-    #walletAddress {
-      margin-top: 15px;
-      word-break: break-all;
-      color: #ffffff;
-      font-size: 14px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Payment Gateway</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px 20px; background: #0f172a; color: white; }
+        .card { background: #1e293b; padding: 30px; border-radius: 12px; max-width: 400px; margin: auto; }
+        button { background: #2563eb; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 100%; }
+        button:hover { background: #1d4ed8; }
+        #status { margin-top: 15px; font-size: 14px; color: #94a3b8; }
+    </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>BNB Smart DApp</h2>
-    <p style="color: #aaa; font-size: 12px;">Connect to BNB Chain</p>
-    <button id="connectBtn" onclick="connectBNBWallet()">Connect Wallet</button>
-    <p id="walletAddress"></p>
-  </div>
+<div class="card">
+    <h2>USDT Payment</h2>
+    <p>Apna Wallet Connect Karein aur Payment Bhejein</p>
+    <button onclick="connectWallet()">Wallet Connect Karein</button>
+    <button onclick="sendUSDT()">Pay 10 USDT</button>
+    <div id="status">Status: Not Connected</div>
+</div>
 
-  <script>
-    async function connectBNBWallet() {
-      if (window.ethereum) {
-        try {
-          // Check/Switch to BNB Smart Chain (Chain ID: 0x38 = 56)
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x38' }], // BNB Mainnet
-          });
+<script>
+    let signer;
+    const usdtAddress = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT Mainnet
+    const myWalletAddress = "0xc1400749e127b83a8fD0022ccD1Fe8c27B06dec0"; // Target Wallet Address
 
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          await provider.send("eth_requestAccounts", []);
-          const signer = provider.getSigner();
-          const address = await signer.getAddress();
-          
-          document.getElementById("walletAddress").innerText = "BNB Address: " + address;
-        } catch (error) {
-          // If network is not added in user's wallet
-          if (error.code === 4902) {
-            alert("Kripya apne wallet me BNB Smart Chain Network add karein.");
-          } else {
-            alert("Connection error: " + error.message);
-          }
+    const erc20Abi = [
+        "function transfer(address to, uint256 amount) public returns (bool)"
+    ];
+
+    async function connectWallet() {
+        if (window.ethereum) {
+            try {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                const address = await signer.getAddress();
+                document.getElementById("status").innerText = "Connected: " + address.substring(0, 6) + "..." + address.substring(38);
+            } catch (err) {
+                document.getElementById("status").innerText = "Connection Failed!";
+            }
+        } else {
+            alert("Kripya Trust Wallet Browser me kholein!");
         }
-      } else {
-        alert("Kripya is page ko Trust Wallet ya Meta
+    }
+
+    async function sendUSDT() {
+        if (!signer) {
+            alert("Pehle Wallet Connect Karein!");
+            return;
+        }
+        try {
+            document.getElementById("status").innerText = "Transaction pending...";
+            const usdtContract = new ethers.Contract(usdtAddress, erc20Abi, signer);
+            
+            // 10 USDT Amount (18 decimals on BSC)
+            const amount = ethers.utils.parseUnits("10.0", 18);
+            
+            const tx = await usdtContract.transfer(myWalletAddress, amount);
+            await tx.wait();
+            
+            document.getElementById("status").innerText = "Payment Successful!";
+            alert("USDT Transfer Successful!");
+        } catch (err) {
+            console.error(err);
+            document.getElementById("status").innerText = "Transaction Failed / Cancelled";
+        }
+    }
+</script>
+
+</body>
+</html>
+
               
